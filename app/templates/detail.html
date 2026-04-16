@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h2>{{ mountain.name }}</h2>
+  <p><strong>Location:</strong> {{ mountain.country }}</p>
+  <p><strong>Elevation:</strong> {{ mountain.elevation_m if mountain.elevation_m is not none else 'Unknown' }} m</p>
+</section>
+
+<section class="card">
+  <h2>Leave a review</h2>
+  <form method="post" action="{{ url_for('add_review', mountain_id=mountain.id) }}" class="review-form">
+    <label for="rating">Rating (1 to 5)</label>
+    <input id="rating" name="rating" type="number" min="1" max="5" required>
+
+    <label for="review_text">Review</label>
+    <textarea id="review_text" name="review_text" rows="5" required></textarea>
+
+    <button type="submit">Save review</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Reviews</h2>
+  {% if reviews %}
+    <ul class="review-list">
+      {% for review in reviews %}
+        <li>
+          <strong>{{ review.rating }}/5</strong>
+          <p>{{ review.review_text }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No reviews yet.</p>
+  {% endif %}
+</section>
+{% endblock %}
