@@ -49,9 +49,11 @@ jobs:
         working-directory: terraform
         run: terraform init
 
-      - name: Terraform apply
-        working-directory: terraform
+      - name: Terraform Apply
         run: terraform apply -auto-approve
+        working-directory: terraform
+        env:
+          TF_VAR_db_password: ${{ secrets.TF_VAR_db_password }}
 
       - name: Smoke test
         run: curl --fail --silent --show-error "${{ secrets.APP_URL }}/health"
