@@ -1,6 +1,0 @@
-aws_region            = "eu-west-2"
-db_username           = "postgres"
-db_password           = "change-me"
-github_connection_arn = "arn:aws:apprunner:..."
-github_repository_url = "https://github.com/your-user/your-repo"
-db_subnet_ids         = ["subnet-123", "subnet-456"]
