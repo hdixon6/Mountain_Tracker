@@ -66,24 +66,20 @@ def transform_mountain_payload(payload: list[dict[str, Any]], selected_country: 
 
 
 def fetch_mountains_by_country(country: str, api_key: str | None = None) -> list[MountainDTO]:
-    headers = {"X-Api-Key": api_key} if api_key else {}
+    import json
+    from pathlib import Path
+
+    data_path = Path(__file__).resolve().parent.parent / "data" / "mountains.json"
 
     try:
-        response = requests.get(
-            API_URL,
-            params={"country": country},
-            headers=headers,
-            timeout=10,
-        )
-        print(f"Mountain API status: {response.status_code}", flush=True)
-        print(f"Mountain API body: {response.text[:500]}", flush=True)
-        response.raise_for_status()
-        payload = response.json()
-    except requests.RequestException as exc:
-        print(f"Mountain API error: {exc}", flush=True)
+        with open(data_path, "r", encoding="utf-8") as file:
+            payload = json.load(file)
+    except OSError as exc:
         raise ExternalApiError("Unable to load mountain data right now.") from exc
 
     if not isinstance(payload, list):
-        raise ExternalApiError("Unexpected mountain API response.")
+        raise ExternalApiError("Unexpected mountain data format.")
 
-    return transform_mountain_payload(payload, country)
+    filtered = [row for row in payload if row.get("country") == country]
+
+    return transform_mountain_payload(filtered, country)

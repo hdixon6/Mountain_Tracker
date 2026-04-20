@@ -1,0 +1,12 @@
+[
+  {"name": "Ben Nevis", "country": "United Kingdom", "elevation": 1345},
+  {"name": "Scafell Pike", "country": "United Kingdom", "elevation": 978},
+  {"name": "Snowdon", "country": "United Kingdom", "elevation": 1085},
+  {"name": "Mount Everest", "country": "Nepal", "elevation": 8849},
+  {"name": "K2", "country": "Pakistan", "elevation": 8611},
+  {"name": "Mont Blanc", "country": "France", "elevation": 4805},
+  {"name": "Matterhorn", "country": "Switzerland", "elevation": 4478},
+  {"name": "Zugspitze", "country": "Germany", "elevation": 2962},
+  {"name": "Mount Elbrus", "country": "Russia", "elevation": 5642},
+  {"name": "Mount Kilimanjaro", "country": "Tanzania", "elevation": 5895}
+]
