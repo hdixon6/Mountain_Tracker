@@ -73,6 +73,7 @@ def fetch_mountains_by_country(country: str, api_key: str | None = None) -> list
         response.raise_for_status()
         payload = response.json()
     except requests.RequestException as exc:
+        print(f"Mountain API error: {exc}")
         raise ExternalApiError("Unable to load mountain data right now.") from exc
 
     if not isinstance(payload, list):
