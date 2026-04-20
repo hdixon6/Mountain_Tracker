@@ -69,11 +69,18 @@ def fetch_mountains_by_country(country: str, api_key: str | None = None) -> list
     headers = {"X-Api-Key": api_key} if api_key else {}
 
     try:
-        response = requests.get(API_URL, params={"country": country}, headers=headers, timeout=10)
+        response = requests.get(
+            API_URL,
+            params={"country": country},
+            headers=headers,
+            timeout=10,
+        )
+        print(f"Mountain API status: {response.status_code}", flush=True)
+        print(f"Mountain API body: {response.text[:500]}", flush=True)
         response.raise_for_status()
         payload = response.json()
     except requests.RequestException as exc:
-        print(f"Mountain API error: {exc}")
+        print(f"Mountain API error: {exc}", flush=True)
         raise ExternalApiError("Unable to load mountain data right now.") from exc
 
     if not isinstance(payload, list):
