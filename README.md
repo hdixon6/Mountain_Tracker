@@ -1,31 +1,58 @@
-# Mountain Tracker
+name: ci-cd
 
-A small Flask web app for the DevOps assignment.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
 
-## Features
-- Search mountains by country
-- View mountain name, location and elevation
-- Leave and view reviews
-- `/health` endpoint for smoke testing
+jobs:
+  test:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
 
-## Local setup
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-python run.py
-```
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-## Tests
-```bash
-pytest
-```
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-## Pipeline design
-- Pull request: run automated tests
-- Push to `main`: deploy infrastructure and app
-- Post-deploy smoke test: call `/health`
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-## Notes
-The Terraform files are a starter scaffold and need real AWS values before deployment.
+      - name: Run tests
+        run: PYTHONPATH=. pytest
+
+  docker:
+    name: Build Docker Image
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t mountain-tracker .
+
+  deploy:
+    name: Continuous Deployment
+    if: github.event_name == 'push'
+    needs: docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Render deploy
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+      - name: Wait for deploy
+        run: sleep 30
+
+      - name: Smoke test
+        run: curl --fail --silent --show-error https://mountain-tracker-ucgl.onrender.com/health
+        
