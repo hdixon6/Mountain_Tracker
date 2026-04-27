@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import pycountry
-import requests
+
 
 API_URL = "https://api.api-ninjas.com/v1/mountains"
 
