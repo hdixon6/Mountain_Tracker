@@ -6,3 +6,4 @@ pytest-mock==3.14.0
 requests==2.32.3
 pycountry==24.6.1
 gunicorn==23.0.0
+flake8==7.1.1
