@@ -11,4 +11,3 @@ def test_mountain_detail_contains_back_link():
     client = app.test_client()
     response = client.get("/mountain/1")
     assert b'href="/"' in response.data
-
