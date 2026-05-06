@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
+
+<a href="{{ url_for('index') }}" class="back-link">← Back to search</a>
+
 <section class="card">
   <h2>{{ mountain.name }}</h2>
   <p><strong>Location:</strong> {{ mountain.country }}</p>
